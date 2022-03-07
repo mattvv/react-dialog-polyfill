@@ -12,6 +12,14 @@ const ModalBase = forwardRef((p, modal) => {
   } = p
   useEffect(() => {
     const self = modal.current
+    dialogPolyfill.registerDialog(self);
+    self.onclose=e => {
+      onClose(e, self)
+    }
+    self.oncancel=e => {
+      e.preventDefault()
+      onCancel(e, self)
+    }
     if (!self || !ready || self.open === open) return
     const show = useAsModal ? () => self.showModal() : () => self.show()
     const close = () => self.close()
@@ -28,8 +36,8 @@ const ModalBase = forwardRef((p, modal) => {
   return (
     <dialog {...rest}
      ref={modal}
-     onCancel={onCancelWrap}
-     onClose={onCloseWrap}
+//      onCancel={onCancelWrap}
+//      onClose={onCloseWrap}
     >
       {children}
     </dialog>
